@@ -1,28 +1,33 @@
 <?php
-// src/Service/EmailService.php
+
 namespace App\Service;
 
+use App\Entity\EmailToken;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
-use App\Entity\EmailToken;
 
 class EmailService
 {
-    private MailerInterface $mailer;
+    private $mailer;
 
     public function __construct(MailerInterface $mailer)
     {
         $this->mailer = $mailer;
     }
 
-    public function sendEmailConfirmation(string $userEmail, EmailToken $emailToken): void
+    public function sendEmailConfirmation(string $userEmail, EmailToken $emailToken, int $codePin)
     {
+        $validationLink = 'http://localhost:8000/api/validate-email/' . $emailToken->getToken();
+
         $emailMessage = (new Email())
-            ->from('no-reply@votresite.com')
+            ->from('andyhgael032@gmail.com')
             ->to($userEmail)
-            ->subject('Confirmez votre adresse email')
-            ->html('<p>Cliquez sur le lien suivant pour confirmer votre adresse email :</p>' .
-                   '<p><a href="http://localhost:8000/api/validate-email/' . $emailToken->getToken() . '">Confirmer mon email</a></p>');
+            ->subject('Confirmez votre compte')
+            ->html("
+                <p>Votre code PIN est : <strong>{$codePin}</strong></p>
+                <p>Cliquez sur le lien suivant pour valider votre compte :</p>
+                <p><a href='{$validationLink}'>Valider mon compte</a></p>
+            ");
 
         $this->mailer->send($emailMessage);
     }
