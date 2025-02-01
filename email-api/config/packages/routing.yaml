@@ -1,0 +1,11 @@
+# config/packages/routing.yaml
+framework:
+    router:
+        # Configure comment générer les URLs dans des contextes non-HTTP, comme les commandes CLI
+        #default_uri: http://localhost
+
+# Appliquer des configurations spécifiques pour l'environnement de production
+when@prod:
+    framework:
+        router:
+            strict_requirements: null

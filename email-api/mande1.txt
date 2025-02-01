@@ -1,0 +1,67 @@
+package com.example.cryptomonnaie.services;
+
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+
+@Service
+public class UserService {
+
+    private static final String API_BASE_URL = "http://localhost:8000/api";
+
+    private final RestTemplate restTemplate;
+
+    @Autowired
+    public UserService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+
+    // Enregistrement utilisateur
+    public String registerUser(String nom, String prenom, String email, String password) {
+        String jsonRequest = String.format("{\"nom\": \"%s\", \"prenom\": \"%s\", \"email\": \"%s\", \"password\": \"%s\"}",
+                nom, prenom, email, password);
+
+        String apiUrl = API_BASE_URL + "/register";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> entity = new HttpEntity<>(jsonRequest, headers);
+
+        System.out.println("Envoi de la requête d'inscription à " + apiUrl);
+        System.out.println("Corps de la requête: " + jsonRequest);
+
+        ResponseEntity<String> response = restTemplate.postForEntity(apiUrl, entity, String.class);
+
+        System.out.println("Réponse reçue: " + response.getBody());
+
+        return response.getBody();
+    }
+
+    // Connexion utilisateur avec code PIN
+    public String loginUser(String email, String password, int codePin) {
+        String jsonRequest = String.format("{\"email\": \"%s\", \"password\": \"%s\", \"code_pin\": %d}",
+                email, password, codePin);
+
+        String apiUrl = API_BASE_URL + "/login/first";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> entity = new HttpEntity<>(jsonRequest, headers);
+
+        System.out.println("Envoi de la requête de connexion à " + apiUrl);
+        System.out.println("Corps de la requête: " + jsonRequest);
+
+        try {
+            ResponseEntity<String> response = restTemplate.postForEntity(apiUrl, entity, String.class);
+            System.out.println("Réponse reçue: " + response.getBody());
+            return response.getBody();
+        } catch (Exception e) {
+            System.err.println("Erreur lors de la connexion: " + e.getMessage());
+            return "Erreur lors de la connexion: " + e.getMessage();
+        }
+    }
+}
