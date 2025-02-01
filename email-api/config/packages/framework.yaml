@@ -1,0 +1,21 @@
+framework:
+    secret: '%env(APP_SECRET)%'
+
+    # Activer la protection CSRF si nécessaire
+    csrf_protection: true
+
+    # Configuration de la session
+    session:
+        enabled: true
+        handler_id: null # Utilisation du gestionnaire de session par défaut
+        cookie_secure: auto
+        cookie_samesite: lax
+        cookie_lifetime: 3600  # Temps de vie des cookies de session (1 heure)
+        storage_factory_id: session.storage.factory.native # Correctement défini ici
+
+# Configuration de la session en environnement de test
+when@test:
+    framework:
+        test: true
+        session:
+            storage_factory_id: session.storage.factory.mock_file

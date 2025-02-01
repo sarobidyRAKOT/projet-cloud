@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription</title>
+    <link rel="stylesheet" type="text/css" href="css/Inscription.css">
+</head>
+<body>
+    <div class="container">
+        <div class="left-content">
+            <h1>Crypto App</h1>
+            <p class="gradient-text">Join 10m+ users buying and selling cryptocurrencies at true cost</p>
+            <p class="slogan">Start your crypto journey with us – Fast, Secure, Reliable, and Empowering. Join thousands of users who are already making the most out of their investments!</p>
+        </div>
+        <div class="form-container">
+            <h1>Inscription</h1>
+            <form action="/register" method="post">
+                <input type="text" name="nom" placeholder="Nom" required>
+                <input type="text" name="prenom" placeholder="Prénom" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="password" placeholder="Mot de passe" required>
+                <button type="submit">S'inscrire</button>
+            </form>
+            <p th:if="${successMessage}" th:text="${successMessage}"></p>
+        <p th:if="${errorMessage}" th:text="${errorMessage}"></p>
+        </div>
+    </div>
+
+    
+</body>
+</html>
